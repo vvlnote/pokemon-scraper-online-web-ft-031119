@@ -14,13 +14,20 @@ class Pokemon
   end
   
   def self.find(id, db)
-    #@@all.find {|x| x.id == id}
-    x = db.execute("SELECT * FROM pokemon WHERE pokemon.id = #{id}")
+    pokemon = db.execute("SELECT * FROM pokemon WHERE id=?", [num])
+    new_pokemon = self.new(pokemon)
+    new_pokemon.id = pokemon[0][0]
+    new_pokemon.name = pokemon[0][1]
+    new_pokemon.type = pokemon[0][2]
+    new_pokemon.hp = pokemon[0][3]
+    return new_pokemon
     
   end
   
   def alter_hp(new_hp, db)
-    str = "UPDATE pokemon SET hp = #{new_hp} WHERE name = #{@name}"
-    db.execute("UPDATE pokemon SET hp = #{new_hp} WHERE name = #{@name}")
+    # str = "UPDATE pokemon SET hp = #{new_hp} WHERE name = #{@name}"
+    # db.execute("UPDATE pokemon SET hp = #{new_hp} WHERE name = #{@name}")
+    db.execute("UPDATE pokemon SET hp = ? WHERE id = ?", [num], [self.id])
+    self.hp = num
   end
 end
